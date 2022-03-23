@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 
 class AuthApiController extends Controller
@@ -18,7 +18,7 @@ class AuthApiController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['authenticate','register']]);
+        $this->middleware('auth:api', ['except' => ['authenticate', 'register']]);
     }
 
     public function authenticate(Request $request)
@@ -80,18 +80,20 @@ class AuthApiController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         try {
+            $user = new User;
 
-            DB::table('users')->insert([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
 
-        }catch (\Exception $e){
-            return response()->json($e->getLine() . ' ---- ' . $e->getMessage() );
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'invalid_credentials'], 401);
         }
         return response()->json('Cadastrado com sucesso!');
     }
@@ -100,12 +102,12 @@ class AuthApiController extends Controller
     {
         $user = user::find($id);
         if (!$user) {
-            return response() -> json([
-                    'message' => 'Usuário não encontrado!'
-                ], 404);
+            return response()->json([
+                'message' => 'Usuário não encontrado!'
+            ], 404);
         }
         $user->delete();
-        return response() ->json([
+        return response()->json([
             'message' => 'Deletado com sucesso!'
         ]);
     }
