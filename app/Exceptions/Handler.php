@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use Doctrine\DBAL\Exception;
+use Facade\FlareClient\Http\Exceptions\NotFound;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -32,20 +33,21 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws Throwable
      */
 
 
-    public function render($request,   $exception)
-    {
-        if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-            return response()->json(['error' => 'token_expired'], $exception->getStatusCode());
+    public function register(){
 
-        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-            return response()->json(['error' => 'token_invalid'], $exception->getStatusCode());
+        $this->reportable(function (Throwable $e){
 
-        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException)
-            return response()->json(['error' => 'token_has_been_blacklisted'], $exception->getStatusCode());
+        });
 
-        return parent::render($request, $exception);
+        $this->renderable(function (NotFoundHttpException $exception ){
+            return response()->json('not_found');
+
+        });
+
     }
+
 }

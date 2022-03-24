@@ -66,7 +66,7 @@ class Controller extends BaseController
         }
     }
 
-    //atualizar os dados
+
 
 
     public function destroy($id)

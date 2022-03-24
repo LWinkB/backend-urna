@@ -34,7 +34,7 @@ class AuthApiController extends Controller
         return response()->json(compact('token', 'user'));
     }
 
-    public function getAuthenticatedUser()
+    public function votation()
     {
         if (!$user = $this->jwtAuth->parseToken()->authenticate()) {
             return response()->json(['error' => 'user_not_found'], 404);
@@ -79,7 +79,7 @@ class AuthApiController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
       $token = $this->jwtAuth->getToken();
       $this->jwtAuth->invalidate($token);
