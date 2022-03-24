@@ -9,18 +9,20 @@ use App\Http\Controllers\SenadorApiController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('cadastro', [AuthApiController::class, "register"]);
+Route::post('cadastro', [AuthApiController::class, "register"]); //ok
 
-Route::delete('cadastro/{id}',[AuthApiController::class,"destroy"]);
+Route::delete('cadastro/{id}',[AuthApiController::class,"destroy"]);//ok
 
-Route::post('login', [AuthApiController::class, "authenticate"]);
+Route::post('login', [AuthApiController::class, "login"]); //ok
+
+Route::post('logout', [AuthApiController::class, "logout"]);//not ok
 
 Route::post('login-refresh', [AuthApiController::class, "refreshToken"]); //need token
 
 Route::get('me', [AuthApiController::class, "getAuthenticatedUser"]); //need token
 
 
-Route::group(['middleware'=>'auth:api'],function () {
+Route::group(['middleware'=>'auth:api'],function () { //ok
 Route::apiResource('presidente', PresidenteApiController::class);
 
 Route::apiResource('senador', SenadorApiController::class);

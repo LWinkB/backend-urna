@@ -2,11 +2,9 @@
 
 namespace App\Exceptions;
 
+use Doctrine\DBAL\Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use League\Flysystem\Exception;
 use Throwable;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -33,21 +31,21 @@ class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
 
 
-    public function register()
+    public function render($request,   $exception)
     {
-        $this->reportable(function (Exception $e, $request) {
-            if ($e instanceof Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['token_expired'], $e->getStatusCode());
-            }
-            if ($e instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['token_invalid'], $e->getStatusCode());
-            }
+        if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+            return response()->json(['error' => 'token_expired'], $exception->getStatusCode());
 
-            return parent::render($request, $e);
-        });
+        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+            return response()->json(['error' => 'token_invalid'], $exception->getStatusCode());
+
+        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException)
+            return response()->json(['error' => 'token_has_been_blacklisted'], $exception->getStatusCode());
+
+        return parent::render($request, $exception);
     }
 }
