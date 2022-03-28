@@ -46,7 +46,7 @@ class Senador extends Model
             'nome' => 'required',
             'numero' => 'required|unique:senador',
             'partido' => 'required',
-            'imgCandidato' => 'image',
+            'imgCandidato' => 'required',
             'qtdVotos' => 'unsigned'
         ];
     }

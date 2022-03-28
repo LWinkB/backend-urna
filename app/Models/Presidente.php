@@ -40,13 +40,13 @@ class Presidente extends Model
         'qtdVotos'
     ];
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'nome' => 'required',
             'numero' => 'required|unique:presidente',
             'partido' => 'required',
-            'imgCandidato' => 'image',
+            'imgCandidato' => 'required',
             'qtdVotos' => 'unsigned'
         ];
     }

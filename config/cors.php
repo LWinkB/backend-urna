@@ -23,7 +23,9 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type','X-Requested-With', 'Authorization'],
+    'Access-Control-Allow-Methods' => ['*'],
+
+    'allowed_headers' => ['Content-Type','X-Requested-With','Authorization'],
 
     'exposed_headers' => [],
 

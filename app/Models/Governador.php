@@ -46,7 +46,7 @@ class Governador extends Model
             'nome' => 'required',
             'numero' => 'required|unique:governador',
             'partido' => 'required',
-            'imgCandidato' => 'image',
+            'imgCandidato' => 'required',
             'qtdVotos' => 'unsigned'
         ];
     }
