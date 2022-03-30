@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as image;
+
 
 class Controller extends BaseController
 {
@@ -21,6 +24,7 @@ class Controller extends BaseController
     public function index()
     {
         $data = $this->model->all();
+
         return response()->json($data);
     }
 
@@ -55,18 +59,19 @@ class Controller extends BaseController
 
     }
 
-    //Mostra um item específico
-    public function show($id)
-    {
 
-        if (!$data = $this->model->find($id)) {
+
+    //Mostra um item específico
+    public function show($numero)
+    {
+        $candidate = $this->model::where('numero', $numero)->first();
+//        $data = DB::select('select * from presidente where numero = :numero', ['numero' => $numero]);
+        if ($candidate == []) {
             return response()->json(['Error' => 'Nada foi encontrado'], 404);
         } else {
-            return response()->json($data);
+            return response()->json($candidate);
         }
     }
-
-
 
 
     public function destroy($id)
