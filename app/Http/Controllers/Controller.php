@@ -67,7 +67,7 @@ class Controller extends BaseController
         $candidate = $this->model::where('numero', $numero)->first();
 //        $data = DB::select('select * from presidente where numero = :numero', ['numero' => $numero]);
         if ($candidate == []) {
-            return response()->json(['Error' => 'Nada foi encontrado'], 404);
+            return response()->json([], 200);
         } else {
             return response()->json($candidate);
         }
