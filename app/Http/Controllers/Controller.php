@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as image;
 
@@ -17,6 +18,7 @@ class Controller extends BaseController
 {
     protected $model;
     protected $pathCandidate = 'imagemCandidato';
+
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -43,7 +45,7 @@ class Controller extends BaseController
             $name = uniqid(date('His'));
 
             $nameFile = "{$name}.{$extension}";
-
+                dd($request);
             $upload = image::make($dataForm['imgCandidato'])->resize(177, 236)->save(storage_path("App/public/{$this->pathCandidate}/{$nameFile}"));
 
             if (!$upload) {
@@ -60,12 +62,11 @@ class Controller extends BaseController
     }
 
 
-
     //Mostra um item específico
     public function show($numero)
     {
         $candidate = $this->model::where('numero', $numero)->first();
-//        $data = DB::select('select * from presidente where numero = :numero', ['numero' => $numero]);
+
         if ($candidate == []) {
             return response()->json([], 200);
         } else {
@@ -73,6 +74,12 @@ class Controller extends BaseController
         }
     }
 
+    public function update($id)
+    {
+        $qtdVotos = $this->model::select('qtdVotos')->where('id', $id)->first();
+
+        $this->model::where('id', $id)->update(['qtdVotos' => $qtdVotos['qtdVotos'] + 1]);
+    }
 
     public function destroy($id)
     {

@@ -22,6 +22,7 @@ Route::post('login-refresh', [AuthApiController::class, "refreshToken"]); //need
 Route::get('user', [AuthApiController::class, "getUser"]); //need token
 
 
+
 //Route::group(['middleware'=>'auth:api'],function () { //ok
 Route::apiResource( 'presidente', PresidenteApiController::class);
 
