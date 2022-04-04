@@ -45,7 +45,7 @@ class Controller extends BaseController
             $name = uniqid(date('His'));
 
             $nameFile = "{$name}.{$extension}";
-                dd($request);
+
             $upload = image::make($dataForm['imgCandidato'])->resize(177, 236)->save(storage_path("App/public/{$this->pathCandidate}/{$nameFile}"));
 
             if (!$upload) {
