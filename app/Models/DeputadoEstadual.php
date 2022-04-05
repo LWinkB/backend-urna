@@ -46,7 +46,7 @@ class DeputadoEstadual extends Model
             'nome' => 'required',
             'numero' => 'required|unique:deputado estadual',
             'partido' => 'required',
-            'imgCandidato' => 'required',
+            'imgCandidato' => 'required|image',
             'qtdVotos' => 'unsigned'
         ];
     }

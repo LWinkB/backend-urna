@@ -46,7 +46,7 @@ class DeputadoFederal extends Model
             'nome' => 'required',
             'numero' => 'required|unique:deputado federal',
             'partido' => 'required',
-            'imgCandidato' => 'required',
+            'imgCandidato' => 'required|image',
             'qtdVotos' => 'unsigned'
         ];
     }

@@ -46,7 +46,7 @@ class Presidente extends Model
             'nome' => 'required',
             'numero' => 'required|unique:presidente',
             'partido' => 'required',
-            'imgCandidato' => 'required',
+            'imgCandidato' => 'required|image',
             'qtdVotos' => 'unsigned'
         ];
     }

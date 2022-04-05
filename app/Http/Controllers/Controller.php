@@ -9,7 +9,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as image;
 
@@ -34,20 +33,26 @@ class Controller extends BaseController
 
     public function store(Request $request)
     {
-        $this->validate($request, $this->model->rules());
+
+        $data = $request->all();
+        $candidatoForm = ($request->candidateForm);
+
+        $photo = $request->imgCandidato;
+
 
         $dataForm = $request->all();
+        $this->validate($request, $this->model->rules());
 
-        if ($request->hasFile('imgCandidato') && $request->file('imgCandidato')->isValid()) {
+        if ($request->hasFile('imgCandidato')) {
 
             $extension = $request->imgCandidato->extension();
 
-            $name = uniqid(date('His'));
+            $name = date('His');
 
             $nameFile = "{$name}.{$extension}";
 
-            $upload = image::make($dataForm['imgCandidato'])->resize(177, 236)->save(storage_path("App/public/{$this->pathCandidate}/{$nameFile}"));
-
+            $upload = image::make($photo)->resize(177, 236)->save(storage_path("App/public/{$this->pathCandidate}/{$nameFile}"));
+                
             if (!$upload) {
                 return response()->json(['Error' => 'Falha ao fazer upload'], 500);
             } else {
@@ -60,7 +65,6 @@ class Controller extends BaseController
         return response()->json($data, 201);
 
     }
-
 
     //Mostra um item específico
     public function show($numero)
