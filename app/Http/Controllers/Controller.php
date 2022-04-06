@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as image;
 
@@ -39,8 +40,8 @@ class Controller extends BaseController
 
         $photo = $request->imgCandidato;
 
-
         $dataForm = $request->all();
+
         $this->validate($request, $this->model->rules());
 
         if ($request->hasFile('imgCandidato')) {
@@ -48,11 +49,10 @@ class Controller extends BaseController
             $extension = $request->imgCandidato->extension();
 
             $name = date('His');
-
             $nameFile = "{$name}.{$extension}";
 
-            $upload = image::make($photo)->resize(177, 236)->save(storage_path("App/public/{$this->pathCandidate}/{$nameFile}"));
-                
+            $upload = image::make($photo)->resize(177, 236)->save(storage_path("App/public/imagemCandidato/{$nameFile}"));
+
             if (!$upload) {
                 return response()->json(['Error' => 'Falha ao fazer upload'], 500);
             } else {
@@ -60,17 +60,22 @@ class Controller extends BaseController
             }
         }
 
+
         $data = $this->model->create($dataForm);
 
         return response()->json($data, 201);
-
     }
 
     //Mostra um item específico
     public function show($numero)
     {
+
         $candidate = $this->model::where('numero', $numero)->first();
 
+        $url = Storage::disk('public')->url("imagemCandidato/{$candidate['imgCandidato']}");
+
+        $candidate['imgCandidato'] = $url;
+        Log::alert($url);
         if ($candidate == []) {
             return response()->json([], 200);
         } else {
