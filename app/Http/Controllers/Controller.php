@@ -71,16 +71,15 @@ class Controller extends BaseController
     {
 
         $candidate = $this->model::where('numero', $numero)->first();
-
-        $url = Storage::disk('public')->url("imagemCandidato/{$candidate['imgCandidato']}");
-
-        $candidate['imgCandidato'] = $url;
-        Log::alert($url);
         if ($candidate == []) {
-            return response()->json([], 200);
-        } else {
-            return response()->json($candidate);
+            return response()->json([]);
         }
+        $url = Storage::disk('public')->url("imagemCandidato/{$candidate['imgCandidato']}");
+        $candidate['imgCandidato'] = $url;
+
+        Log::alert($url);
+        return response()->json($candidate);
+
     }
 
     public function update($id)
