@@ -89,6 +89,7 @@ class Controller extends BaseController
         $this->model::where('id', $id)->update(['qtdVotos' => $qtdVotos['qtdVotos'] + 1]);
     }
 
+
     public function destroy($id)
     {
         if (!$data = $this->model->find($id)) {
