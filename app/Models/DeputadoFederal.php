@@ -37,7 +37,7 @@ class DeputadoFederal extends Model
 		'numero',
 		'partido',
 		'imgCandidato',
-		'qtdVotos'
+		'qtdVotos',
 	];
 
     public function rules()
@@ -47,7 +47,7 @@ class DeputadoFederal extends Model
             'numero' => 'required|unique:deputado federal',
             'partido' => 'required',
             'imgCandidato' => 'required|image',
-            'qtdVotos' => 'unsigned'
+            'qtdVotos' => 'unsigned',
         ];
     }
 

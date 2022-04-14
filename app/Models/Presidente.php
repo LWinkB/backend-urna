@@ -50,5 +50,6 @@ class Presidente extends Model
             'qtdVotos' => 'unsigned'
         ];
     }
+
 }
 
